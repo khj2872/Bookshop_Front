@@ -1,3 +1,5 @@
+# Bookshop_Front [![Build Status](https://travis-ci.org/khj2872/Bookshop_Front.svg?branch=master)](https://travis-ci.org/khj2872/Bookshop_Front)
+
 # test
 
 ## Project setup
