@@ -10,8 +10,8 @@ cache:
   directories:
     - node_modules
 
-# script:
-#   - npm run test:unit
+script:
+  - yarn test:unit
 
 # CI 실행 완료시 메일로 알람
 notifications:
