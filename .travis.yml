@@ -1,9 +1,20 @@
 language: node_js
 node_js:
-  - 9
+  - 8
+
+branches:
+  only:
+    - master
+
 cache:
   directories:
     - node_modules
 
-script:
-  - npm run test:unit
+# script:
+#   - npm run test:unit
+
+# CI 실행 완료시 메일로 알람
+notifications:
+  email:
+    recipients:
+      - hykang2872@gmail.com
