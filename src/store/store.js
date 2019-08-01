@@ -1,0 +1,30 @@
+import Vue from 'vue';
+import Vuex from 'vuex';
+import state from './state'
+import mutations from './mutations'
+import actions from './actions'
+import getters from './getters'
+import VuexPersistence from 'vuex-persist'
+
+Vue.use(Vuex);
+
+const vuexLocal = new VuexPersistence({
+    storage: window.localStorage,
+    reducer: (state) => ({
+        username: state.username,
+        jwt: state.jwt,
+        loggedIn: state.loggedIn,
+        id: state.id,
+        role: state.role,
+        orderListId: state.orderListId,
+        userQuery: state.userQuery
+    })
+});
+
+export default new Vuex.Store({
+    state,
+    mutations,
+    actions,
+    getters,
+    plugins: [vuexLocal.plugin]
+});
