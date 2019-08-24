@@ -11,7 +11,25 @@ cache:
     - node_modules
 
 script:
-  - echo "skipping tests"
+  - yarn build
+
+# before_deploy:
+#   - mkdir -p deploy/client
+#   - mv kobobook-webservice-api * deploy/client/kobobook-webservice-api.zip
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: kobobook-deploy
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: public_read
+    # local_dir: deploy
+    wait-until-deployed: true
+    on:
+      repo: khj2872/Bookshop
+      branch: master
 
 # CI 실행 완료시 메일로 알람
 notifications:
