@@ -54,7 +54,7 @@
                                 <td :rowspan="order.orderItems.length">
                                     <strong>{{order.id}}</strong>
                                     <p></p>
-                                    ({{order.orderDate | moment("YYYY-MM-DD")}})
+                                    ({{order.orderDate | date}})
                                     <p></p>
                                     <button @click="getOrderDetail(order.id)">주문상세보기</button>
                                 </td>
@@ -73,8 +73,11 @@
                                 <td v-if="order.status === 'ORDER' && order.delivery.status ==='READY'">
                                     준비중
                                 </td>
-                                <td v-if="order.status === 'ORDER' && order.delivery.status ==='COMP'">
+                                <td v-if="order.status === 'ORDER' && order.delivery.status ==='DELIVERY'">
                                     배송중
+                                </td>
+                                <td v-if="order.status === 'ORDER' && order.delivery.status ==='COMP'">
+                                    배송완료
                                 </td>
                                 <td v-if="order.status === 'CANCEL'">
                                     주문취소
@@ -93,8 +96,11 @@
                                 <td v-if="order.status === 'ORDER' && order.delivery.status ==='READY'">
                                     준비중
                                 </td>
-                                <td v-if="order.status === 'ORDER' && order.delivery.status ==='COMP'">
+                                <td v-if="order.status === 'ORDER' && order.delivery.status ==='DELIVERY'">
                                     배송중
+                                </td>
+                                <td v-if="order.status === 'ORDER' && order.delivery.status ==='COMP'">
+                                    배송완료
                                 </td>
                                 <td v-if="order.status === 'CANCEL'">
                                     주문취소
@@ -136,6 +142,12 @@ export default {
             } else {
                 return value.toFixed(0).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
             }
+        },
+        date(value) {
+            const day = value.dayOfMonth;
+            const month = value.monthValue;
+            const year = value.year;
+            return year + '-' + month + '-' + day;
         }
     },
 

@@ -24,7 +24,6 @@
                 </table>
             </div>
 
-
             <div class="col-md-12 mb-5 mb-md-0">
                 <h2 class="h3 mb-3 text-black">02 배송정보</h2>
                 <table class="table table-bordered" style="margin:auto;">
@@ -48,7 +47,7 @@
                         <td :rowspan="orderDetail.orderItems.length">
                             <strong>{{orderDetail.id}}</strong>
                             <p></p>
-                            ({{orderDetail.orderDate | moment("YYYY-MM-DD")}})
+                            ({{orderDetail.orderDate | date}})
                         </td>
 
                         <td>
@@ -65,11 +64,14 @@
                         </td>
                         <td v-if="orderDetail.status === 'ORDER' && orderDetail.delivery.status ==='READY'">
                             준비중
+                        </td>
+                        <td v-if="orderDetail.status === 'ORDER' && orderDetail.delivery.status ==='DELIVERY'">
+                            배송중
                             <p></p>
                             <button type="button" @click="">배송조회</button>
                         </td>
                         <td v-if="orderDetail.status === 'ORDER' && orderDetail.delivery.status ==='COMP'">
-                            배송중
+                            배송완료
                             <p></p>
                             <button type="button" @click="">배송조회</button>
                         </td>
@@ -96,11 +98,14 @@
                             </td>
                             <td v-if="orderDetail.status === 'ORDER' && orderDetail.delivery.status ==='READY'">
                                 준비중
+                            </td>
+                            <td v-if="orderDetail.status === 'ORDER' && orderDetail.delivery.status ==='DELIVERY'">
+                                배송중
                                 <p></p>
                                 <button type="button" @click="">배송조회</button>
                             </td>
                             <td v-if="orderDetail.status === 'ORDER' && orderDetail.delivery.status ==='COMP'">
-                                배송중
+                                배송완료
                                 <p></p>
                                 <button type="button" @click="">배송조회</button>
                             </td>
@@ -195,6 +200,12 @@ export default {
             } else {
                 return value.toFixed(0).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
             }
+        },
+        date(value) {
+            const day = value.dayOfMonth;
+            const month = value.monthValue;
+            const year = value.year;
+            return year + '-' + month + '-' + day;
         }
     },
 
