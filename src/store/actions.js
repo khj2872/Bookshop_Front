@@ -3,6 +3,8 @@ import axios from 'axios'
 import store from '../store/store'
 import router from '../router/router'
 
+axios.defaults.baseURL = process.env.VUE_APP_API;
+
 axios.interceptors.request.use(function (config) {
     store.commit(Constant.CHANGE_ISLOADING, { isloading : true });
     config.headers.Authorization = store.state.jwt;

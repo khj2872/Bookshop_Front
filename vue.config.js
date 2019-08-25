@@ -1,10 +1,11 @@
 module.exports = {
   transpileDependencies: ['vuex-persist'],
   publicPath: '',
+
   devServer: {
     proxy: {
       '/api': {
-        target: 'https://localhost:8442',
+        target: 'http://localhost:8080',
         changeOrigin: true
       }
     }

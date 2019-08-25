@@ -8,9 +8,10 @@ import GAuth from 'vue-google-oauth2'
 import VeeValidate from 'vee-validate'
 import ko from 'vee-validate/dist/locale/ko.js'
 import VueDaumPostCode from 'vue-daum-postcode'
+import loginConfig from './store/loginConfig';
 
 Vue.use(GAuth, {
-    clientId: '715195752938-dhkksls0crjkm62hu5510dvuu2edvs0n.apps.googleusercontent.com',
+    clientId: loginConfig.GOOGLE.CLIENT_ID,
     scope: 'profile email https://www.googleapis.com/auth/plus.login'
 });
 
