@@ -3,9 +3,9 @@ import axios from 'axios'
 import store from '../store/store'
 import router from '../router/router'
 
-let url = '';
-if (process.env.VUE_APP_API) {
-    url = process.VUE_APP_API;
+let url = process.env.VUE_APP_API;
+if (url === undefined) {
+    url = '';
 }
 
 axios.interceptors.request.use(function (config) {
