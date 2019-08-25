@@ -3,10 +3,12 @@ import axios from 'axios'
 import store from '../store/store'
 import router from '../router/router'
 
-let url = process.env.VUE_APP_API;
-if (url === undefined) {
-    url = '';
-}
+// let url = process.env.VUE_APP_API;
+// if (url === undefined) {
+//     url = '';
+// }
+
+let url = '';
 
 axios.interceptors.request.use(function (config) {
     store.commit(Constant.CHANGE_ISLOADING, { isloading : true });
