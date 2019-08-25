@@ -3,7 +3,10 @@ import axios from 'axios'
 import store from '../store/store'
 import router from '../router/router'
 
-axios.defaults.baseURL = process.env.VUE_APP_API;
+let url = '';
+if (process.env.VUE_APP_API) {
+    url = process.VUE_APP_API;
+}
 
 axios.interceptors.request.use(function (config) {
     store.commit(Constant.CHANGE_ISLOADING, { isloading : true });
@@ -15,8 +18,6 @@ axios.interceptors.request.use(function (config) {
 
 axios.interceptors.response.use(function (response) {
     store.commit(Constant.CHANGE_ISLOADING, { isloading : false });
-    console.log('response' + response.statusText);
-
     return response;
 }, function (error) {
     store.commit(Constant.CHANGE_ISLOADING, { isloading : false });
@@ -49,7 +50,8 @@ axios.interceptors.response.use(function (response) {
 export default {
     [Constant.LOGIN_GOOGLE]: (store, payload) => {
         return new Promise((resolve, reject) => {
-            axios.post('/api/login/google', payload)
+            alert('url:' + url + '/api');
+            axios.post(url + '/api/login/google', payload)
                 .then(response => {
                     store.commit(Constant.ADD_JWT, response.data);
                     axios.defaults.headers.common['Authorization'] = response.data;
@@ -70,9 +72,8 @@ export default {
 
     [Constant.ADD_USERNAME_AND_ROLE_AND_ID] : (store) => {
         return new Promise((resolve, reject) => {
-            axios.get('/api/members/')
+            axios.get(url + '/api/members/')
                 .then(response => {
-                    console.log(response);
                     store.commit(Constant.ADD_USERNAME_AND_ROLE_AND_ID, response.data);
                     resolve();
                 })
@@ -92,7 +93,7 @@ export default {
 
     [Constant.REGISTER] : (store, payload) => {
         return new Promise((resolve, reject) => {
-            axios.post('/api/members/register', payload)
+            axios.post(url + '/api/members/register', payload)
                 .then(response => {
                     resolve(response.status);
                 })
@@ -105,7 +106,7 @@ export default {
 
     [Constant.LOGIN] : (store, payload) => {
         return new Promise((resolve, reject) => {
-            axios.post('/api/members/login', payload)
+            axios.post(url + '/api/members/login', payload)
                 .then(jwt => {
                     store.commit(Constant.ADD_JWT, jwt.data);
                     store.dispatch(Constant.ADD_USERNAME_AND_ROLE_AND_ID)
@@ -124,7 +125,7 @@ export default {
 
     [Constant.GET_CATEGORIES] : () => {
         return new Promise((resolve, reject) => {
-            axios.get('/api/categories')
+            axios.get(url + '/api/categories')
                 .then(response => {
                     resolve(response);
                 })
@@ -136,7 +137,7 @@ export default {
 
     [Constant.GET_CATEGORY_ITEMS] : (store, payload) => {
         return new Promise((resolve, reject) => {
-            axios.get('/api/items/category/' + payload)
+            axios.get(url + '/api/items/category/' + payload)
                 .then(response => {
                     resolve(response);
                 })
@@ -148,7 +149,7 @@ export default {
 
     [Constant.GET_AUTOCOMPLETE] : (store, payload) => {
         return new Promise((resolve, reject) => {
-            axios.get('/api/items/autocomplete', {
+            axios.get(url + '/api/items/autocomplete', {
                 params : payload
             })
                 .then(response => {
@@ -162,7 +163,7 @@ export default {
 
     [Constant.START_SEARCH] : (store, payload) => {
         return new Promise((resolve, reject) => {
-            axios.get('/api/items/' + payload.userQuery + '/search/' + payload.searchOption, {
+            axios.get(url + '/api/items/' + payload.userQuery + '/search/' + payload.searchOption, {
                 params : { page : payload.page, size : payload.size }
             })
                 .then(response => {
@@ -176,7 +177,7 @@ export default {
 
     [Constant.GET_ITEM_DETAIL] : (store, payload) => {
         return new Promise((resolve, reject) => {
-            axios.get('/api/items/' + payload)
+            axios.get(url + '/api/items/' + payload)
                 .then(response => {
                     resolve(response);
                 })
@@ -188,7 +189,7 @@ export default {
 
     [Constant.ADD_CART] : (store, payload) => {
         return new Promise((resolve, reject) => {
-            axios.post('/api/carts', payload)
+            axios.post(url + '/api/carts', payload)
                 .then(response => {
                     resolve(response);
                 })
@@ -200,7 +201,7 @@ export default {
 
     [Constant.DELETE_CART] : (store, payload) => {
         return new Promise((resolve, reject) => {
-            axios.delete('/api/carts/' + payload)
+            axios.delete(url + '/api/carts/' + payload)
                 .then(response => {
                     resolve(response);
                 })
@@ -213,7 +214,7 @@ export default {
     [Constant.UPDATE_CART] : (store, payload) => {
         return new Promise((resolve, reject) => {
             const data = { count : payload.count };
-            axios.put('/api/carts/' + payload.id, data)
+            axios.put(url + '/api/carts/' + payload.id, data)
                 .then(response => {
                     resolve(response);
                 })
@@ -225,7 +226,7 @@ export default {
 
     [Constant.GET_CART_LIST] : () => {
         return new Promise((resolve, reject) => {
-            axios.get('/api/carts')
+            axios.get(url + '/api/carts')
                 .then(response => {
                     resolve(response);
                 })
@@ -237,7 +238,7 @@ export default {
 
     [Constant.GET_ORDER_LIST] : (store, payload) => {
         return new Promise((resolve, reject) => {
-            axios.get('/api/carts/list', {
+            axios.get(url + '/api/carts/list', {
                 params : {
                     id : encodeURI(payload)
                 }
@@ -253,7 +254,7 @@ export default {
 
     [Constant.START_ORDER] : (store, payload) => {
         return new Promise((resolve, reject) => {
-            axios.post('/api/orders', payload)
+            axios.post(url + '/api/orders', payload)
                 .then(response => {
                     store.commit(Constant.ADD_ORDER_ID, response.data);
                     store.commit(Constant.ORDER_SUCCESS);
@@ -267,7 +268,7 @@ export default {
 
     [Constant.GET_USER_INFO] : () => {
         return new Promise((resolve, reject) => {
-            axios.get('/api/members/')
+            axios.get(url + '/api/members/')
                 .then(response => {
                     resolve(response);
                 })
@@ -279,7 +280,7 @@ export default {
 
     [Constant.GET_COMPLETE_ORDER_LIST] : (store, payload) => {
         return new Promise((resolve, reject) => {
-            axios.get('/api/orders', {
+            axios.get(url + '/api/orders', {
                 params : payload
             })
                 .then(response => {
@@ -293,7 +294,7 @@ export default {
 
     [Constant.GET_ORDER_DETAIL] : (store, payload) => {
         return new Promise((resolve, reject) => {
-            axios.get('/api/orders/' + payload)
+            axios.get(url + '/api/orders/' + payload)
                 .then(response => {
                     store.commit(Constant.ADD_ORDER_DETAIL, response.data.order);
                     store.commit(Constant.ADD_MEMBER, response.data.member);
@@ -307,8 +308,7 @@ export default {
 
     [Constant.ADD_REVIEW] : (store, payload) => {
         return new Promise((resolve, reject) => {
-
-            axios.post('/api/reviews', payload)
+            axios.post(url + '/api/reviews', payload)
                 .then(response => {
                     resolve(response);
                 })
@@ -320,7 +320,7 @@ export default {
 
     [Constant.DELETE_REVIEW] : (store, payload) => {
         return new Promise((resolve, reject) => {
-            axios.delete('/api/reviews/' + payload)
+            axios.delete(url + '/api/reviews/' + payload)
                 .then(response => {
                     resolve(response);
                 })
